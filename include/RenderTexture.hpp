@@ -38,7 +38,7 @@ class RenderTexture {
 
 	cocos2d::CCTexture2D* asTexture();
 public:
-	RenderTexture(unsigned int width, unsigned int height);
+	RenderTexture(unsigned int width, unsigned int height, GLint texInternalFormat = GL_RGB, GLenum texFormat = GL_RGB);
 	RenderTexture(RenderTexture&&);
 	~RenderTexture();
 
@@ -50,7 +50,7 @@ public:
 	};
 
 	// begin, visit, end a node
-	void capture(cocos2d::CCNode* node, PixelFormat format = PixelFormat::RGBA);
+	void capture(cocos2d::CCNode* node);
 	std::unique_ptr<uint8_t[]> captureData(cocos2d::CCNode* node, PixelFormat format = PixelFormat::RGBA);
 
 	void begin();
