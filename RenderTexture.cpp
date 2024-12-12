@@ -97,7 +97,7 @@ void RenderTexture::end() {
 	director->setViewport();
 }
 
-void RenderTexture::capture(CCNode* node, PixelFormat format) {
+void RenderTexture::capture(CCNode* node) {
 	this->begin();
 	node->visit();
 	this->end();
