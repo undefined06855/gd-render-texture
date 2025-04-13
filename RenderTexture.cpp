@@ -60,7 +60,7 @@ RenderTexture::~RenderTexture() {
 	if (m_depthStencil) glDeleteRenderbuffers(1, &m_depthStencil);
 }
 
-void RenderTexture::begin() {
+void RenderTexture::begin(bool clear) {
 	// save old buffers
 	glGetIntegerv(GL_FRAMEBUFFER_BINDING, &m_oldFBO);
 	glGetIntegerv(GL_RENDERBUFFER_BINDING, &m_oldRBO);
@@ -79,7 +79,7 @@ void RenderTexture::begin() {
 	m_fbActive = true;
 
 	// idk either tbh i just copied it from drawScene
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	if (clear) glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void RenderTexture::end() {
@@ -97,8 +97,8 @@ void RenderTexture::end() {
 	director->setViewport();
 }
 
-void RenderTexture::capture(CCNode* node) {
-	this->begin();
+void RenderTexture::capture(CCNode* node, bool clear) {
+	this->begin(clear);
 	node->visit();
 	this->end();
 }

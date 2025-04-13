@@ -50,10 +50,10 @@ public:
 	};
 
 	// begin, visit, end a node
-	void capture(cocos2d::CCNode* node);
+	void capture(cocos2d::CCNode* node, bool clear = true);
 	std::unique_ptr<uint8_t[]> captureData(cocos2d::CCNode* node, PixelFormat format = PixelFormat::RGBA);
 
-	void begin();
+	void begin(bool clear);
 	void end();
 
 	std::unique_ptr<uint8_t[]> readDataFromTexture(PixelFormat format = PixelFormat::RGBA);
