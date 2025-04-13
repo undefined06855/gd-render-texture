@@ -53,7 +53,7 @@ public:
 	void capture(cocos2d::CCNode* node, bool clear = true);
 	std::unique_ptr<uint8_t[]> captureData(cocos2d::CCNode* node, PixelFormat format = PixelFormat::RGBA);
 
-	void begin(bool clear);
+	void begin(bool clear = true);
 	void end();
 
 	std::unique_ptr<uint8_t[]> readDataFromTexture(PixelFormat format = PixelFormat::RGBA);
