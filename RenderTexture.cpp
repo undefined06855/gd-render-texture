@@ -84,7 +84,7 @@ void RenderTexture::begin(bool clear) {
         glGetFloatv(GL_COLOR_CLEAR_VALUE, clearColor);
         glClearColor(0.f, 0.f, 0.f, 0.f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glClearColor(clearColor[0], clearColor[1], clearColor[2]. clearColor[3]);
+        glClearColor(clearColor[0], clearColor[1], clearColor[2], clearColor[3]);
     }
 }
 
