@@ -79,10 +79,12 @@ void RenderTexture::begin(bool clear) {
 	m_fbActive = true;
 
 	// idk either tbh i just copied it from drawScene
-	if (clear) {
+    if (clear) {
+        float clearColor[4];
+        glGetFloatv(GL_COLOR_CLEAR_VALUE, &clearColor);
         glClearColor(0.f, 0.f, 0.f, 0.f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glClearColor(0.f, 0.f, 0.f, 1.f); // probably what it was before
+        glClearColor(clearColor[0], clearColor[1], clearColor[2]. clearColor[3]);
     }
 }
 
