@@ -2,7 +2,7 @@
 
 using namespace geode::prelude;
 
-RenderTexture::RenderTexture(unsigned int width, unsigned int height, GLint textureInternalFormat, GLenum textureFormat, GLint filter, GLint repeat) 
+RenderTexture::RenderTexture(unsigned int width, unsigned int height, GLint textureInternalFormat, GLenum textureFormat, GLint filter, GLint wrap)
     : m_width(width),
     m_height(height)
 {
@@ -19,8 +19,8 @@ RenderTexture::RenderTexture(unsigned int width, unsigned int height, GLint text
     );
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filter);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrap);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrap);
 
     glGetIntegerv(GL_FRAMEBUFFER_BINDING, &m_oldFBO);
 
