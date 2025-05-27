@@ -25,62 +25,62 @@
 #include <memory>
 
 class RenderTexture {
-	unsigned int m_width = 0;
-	unsigned int m_height = 0;
-	GLint m_oldFBO = 0;
-	GLint m_oldRBO = 0;
-	GLuint m_fbo = 0;
-	GLuint m_depthStencil = 0;
-	GLuint m_texture = 0;
-	float m_oldScaleX = 0;
-	float m_oldScaleY = 0;
-	bool m_fbActive = false;
+    unsigned int m_width = 0;
+    unsigned int m_height = 0;
+    GLint m_oldFBO = 0;
+    GLint m_oldRBO = 0;
+    GLuint m_fbo = 0;
+    GLuint m_depthStencil = 0;
+    GLuint m_texture = 0;
+    float m_oldScaleX = 0;
+    float m_oldScaleY = 0;
+    bool m_fbActive = false;
 
-	cocos2d::CCTexture2D* asTexture();
+    cocos2d::CCTexture2D* asTexture();
 public:
-	RenderTexture(unsigned int width, unsigned int height, GLint texInternalFormat = GL_RGB, GLenum texFormat = GL_RGB, GLint filter = GL_NEAREST);
-	RenderTexture(RenderTexture&&);
-	~RenderTexture();
+    RenderTexture(unsigned int width, unsigned int height, GLint texInternalFormat = GL_RGB, GLenum texFormat = GL_RGB, GLint filter = GL_NEAREST, GLint wrap = GL_REPEAT);
+    RenderTexture(RenderTexture&&);
+    ~RenderTexture();
 
-	enum class PixelFormat {
-		RGB,
-		BGR,
-		RGBA,
-		BGRA
-	};
+    enum class PixelFormat {
+        RGB,
+        BGR,
+        RGBA,
+        BGRA
+    };
 
-	// begin, visit, end a node
-	void capture(cocos2d::CCNode* node, bool clear = true);
-	std::unique_ptr<uint8_t[]> captureData(cocos2d::CCNode* node, PixelFormat format = PixelFormat::RGBA);
+    // begin, visit, end a node
+    void capture(cocos2d::CCNode* node, bool clear = true);
+    std::unique_ptr<uint8_t[]> captureData(cocos2d::CCNode* node, PixelFormat format = PixelFormat::RGBA);
 
-	void begin(bool clear = true);
-	void end();
+    void begin(bool clear = true);
+    void end();
 
-	std::unique_ptr<uint8_t[]> readDataFromTexture(PixelFormat format = PixelFormat::RGBA);
+    std::unique_ptr<uint8_t[]> readDataFromTexture(PixelFormat format = PixelFormat::RGBA);
 
-	GLuint getTexture() const { return m_texture; }
-	
-	// creates a CCTexture2D from the internal texture. this class should not be used after this
-	// as cocos now owns the texture, and a new one isnt created
-	cocos2d::CCTexture2D* intoTexture();
+    GLuint getTexture() const { return m_texture; }
+    
+    // creates a CCTexture2D from the internal texture. this class should not be used after this
+    // as cocos now owns the texture, and a new one isnt created
+    cocos2d::CCTexture2D* intoTexture();
 
-	class Sprite;
+    class Sprite;
 
-	// creates a CCSprite from this texture, while keeping the texture alive. this class should not be used after this,
-	// use return->render instead
-	std::shared_ptr<Sprite> intoManagedSprite();
+    // creates a CCSprite from this texture, while keeping the texture alive. this class should not be used after this,
+    // use return->render instead
+    std::shared_ptr<Sprite> intoManagedSprite();
 };
 
 class RenderTexture::Sprite {
-	Sprite(const Sprite&) = delete;
-	Sprite& operator=(const Sprite&) = delete;
+    Sprite(const Sprite&) = delete;
+    Sprite& operator=(const Sprite&) = delete;
 public:
-	Sprite(RenderTexture texture);
-	~Sprite();
+    Sprite(RenderTexture texture);
+    ~Sprite();
 
-	// these two must live together since they both share an opengl texture
-	// and thus both will try to delete it
+    // these two must live together since they both share an opengl texture
+    // and thus both will try to delete it
 
-	geode::Ref<cocos2d::CCSprite> sprite;
-	RenderTexture render;
+    geode::Ref<cocos2d::CCSprite> sprite;
+    RenderTexture render;
 };
