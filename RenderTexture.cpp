@@ -18,8 +18,6 @@ RenderTexture::RenderTexture(unsigned int width, unsigned int height, GLint text
         0, textureFormat, GL_UNSIGNED_BYTE, 0
     );
 
-    GLfloat borderColor[] = { 0.f, 0.f, 0.f, 0.f }; // maybe let this be customised?
-    glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filter);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrap);
@@ -206,4 +204,5 @@ RenderTexture::Sprite::~Sprite() {
     // let CCSprite delete the texture
     render.m_texture = 0;
 }
+
 
