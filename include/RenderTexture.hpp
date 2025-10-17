@@ -39,6 +39,7 @@ class RenderTexture {
     cocos2d::CCTexture2D* asTexture();
 public:
     RenderTexture(unsigned int width, unsigned int height, GLint texInternalFormat = GL_RGB, GLenum texFormat = GL_RGB, GLint filter = GL_NEAREST, GLint wrap = GL_REPEAT);
+    RenderTexture(unsigned int width, unsigned int height, GLuint texture);
     RenderTexture(RenderTexture&&);
     ~RenderTexture();
 

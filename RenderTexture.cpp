@@ -21,9 +21,13 @@ RenderTexture::RenderTexture(unsigned int width, unsigned int height, GLint text
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filter);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrap);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrap);
+    
+    RenderTexture(width, height, m_texture);
+}
 
+RenderTexture::RenderTexture(unsigned int width, unsigned int height, GLuint texture) : m_width(width), m_height(height), m_texture(texture) {
     glGetIntegerv(GL_FRAMEBUFFER_BINDING, &m_oldFBO);
-	glGetIntegerv(GL_RENDERBUFFER_BINDING, &m_oldRBO);
+    glGetIntegerv(GL_RENDERBUFFER_BINDING, &m_oldRBO);
 
     glGenFramebuffers(1, &m_fbo);
     glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
@@ -35,18 +39,18 @@ RenderTexture::RenderTexture(unsigned int width, unsigned int height, GLint text
         static_cast<GLsizei>(m_width),
         static_cast<GLsizei>(m_height)
     );
-	#ifdef GEODE_IS_DESKTOP
+    #ifdef GEODE_IS_DESKTOP
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_depthStencil);
-	#else
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_depthStencil);
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_depthStencil);
-	#endif
+    #else
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_depthStencil);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_depthStencil);
+    #endif
 
     // attach texture to framebuffer
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_texture, 0);
 
+    glBindRenderbuffer(GL_RENDERBUFFER, m_oldRBO);
     glBindFramebuffer(GL_FRAMEBUFFER, m_oldFBO);
-	glBindRenderbuffer(GL_RENDERBUFFER, m_oldRBO);
 }
 
 RenderTexture::RenderTexture(RenderTexture&& other) {
@@ -84,7 +88,7 @@ void RenderTexture::begin(bool clear) {
     glview->m_fScaleY = m_height / director->getWinSize().height;
     
     glViewport(0, 0, m_width, m_height);
-	glBindRenderbuffer(GL_RENDERBUFFER, m_depthStencil);
+    glBindRenderbuffer(GL_RENDERBUFFER, m_depthStencil);
     glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
     m_fbActive = true;
 
