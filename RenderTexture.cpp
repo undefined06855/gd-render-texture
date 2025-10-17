@@ -22,10 +22,38 @@ RenderTexture::RenderTexture(unsigned int width, unsigned int height, GLint text
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrap);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrap);
     
-    RenderTexture(width, height, m_texture);
+    glGetIntegerv(GL_FRAMEBUFFER_BINDING, &m_oldFBO);
+    glGetIntegerv(GL_RENDERBUFFER_BINDING, &m_oldRBO);
+
+    glGenFramebuffers(1, &m_fbo);
+    glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
+
+    glGenRenderbuffers(1, &m_depthStencil);
+    glBindRenderbuffer(GL_RENDERBUFFER, m_depthStencil);
+    glRenderbufferStorage(
+        GL_RENDERBUFFER, GL_DEPTH24_STENCIL8,
+        static_cast<GLsizei>(m_width),
+        static_cast<GLsizei>(m_height)
+    );
+    #ifdef GEODE_IS_DESKTOP
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_depthStencil);
+    #else
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_depthStencil);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_depthStencil);
+    #endif
+
+    // attach texture to framebuffer
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_texture, 0);
+
+    glBindRenderbuffer(GL_RENDERBUFFER, m_oldRBO);
+    glBindFramebuffer(GL_FRAMEBUFFER, m_oldFBO);
 }
 
-RenderTexture::RenderTexture(unsigned int width, unsigned int height, GLuint texture) : m_width(width), m_height(height), m_texture(texture) {
+RenderTexture::RenderTexture(CCTexture2D* texture) {
+    m_width = texture->getPixelsWide();
+    m_height = texture->getPixelsHigh();
+    m_texture = texture->getName();
+
     glGetIntegerv(GL_FRAMEBUFFER_BINDING, &m_oldFBO);
     glGetIntegerv(GL_RENDERBUFFER_BINDING, &m_oldRBO);
 
