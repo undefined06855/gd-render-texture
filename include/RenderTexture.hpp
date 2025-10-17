@@ -35,6 +35,7 @@ class RenderTexture {
     float m_oldScaleX = 0;
     float m_oldScaleY = 0;
     bool m_fbActive = false;
+    bool m_ownsTexture = true;
 
     cocos2d::CCTexture2D* asTexture();
 public:

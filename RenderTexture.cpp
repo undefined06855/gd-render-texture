@@ -50,7 +50,7 @@ RenderTexture::RenderTexture(unsigned int width, unsigned int height, GLint text
     glBindFramebuffer(GL_FRAMEBUFFER, m_oldFBO);
 }
 
-RenderTexture::RenderTexture(CCTexture2D* texture) {
+RenderTexture::RenderTexture(CCTexture2D* texture) : m_ownsTexture(false) {
     m_width = texture->getPixelsWide();
     m_height = texture->getPixelsHigh();
     m_texture = texture->getName();
@@ -98,7 +98,7 @@ RenderTexture::RenderTexture(RenderTexture&& other) {
 
 RenderTexture::~RenderTexture() {
     if (m_fbo) glDeleteFramebuffers(1, &m_fbo);
-    if (m_texture) glDeleteTextures(1, &m_texture);
+    if (m_ownsTexture && m_texture) glDeleteTextures(1, &m_texture);
     if (m_depthStencil) glDeleteRenderbuffers(1, &m_depthStencil);
 }
 
