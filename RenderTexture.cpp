@@ -24,6 +24,7 @@ RenderTexture::RenderTexture(unsigned int width, unsigned int height, GLint text
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrap);
 
     glGetIntegerv(GL_FRAMEBUFFER_BINDING, &m_oldFBO);
+    glGetIntegerv(GL_RENDERBUFFER_BINDING, &m_oldRBO);
 
     glGenFramebuffers(1, &m_fbo);
     glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
@@ -40,6 +41,7 @@ RenderTexture::RenderTexture(unsigned int width, unsigned int height, GLint text
     // attach texture to framebuffer
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_texture, 0);
 
+    glBindRenderbuffer(GL_RENDERBUFFER, m_oldRBO);
     glBindFramebuffer(GL_FRAMEBUFFER, m_oldFBO);
 }
 
@@ -204,5 +206,6 @@ RenderTexture::Sprite::~Sprite() {
     // let CCSprite delete the texture
     render.m_texture = 0;
 }
+
 
 
