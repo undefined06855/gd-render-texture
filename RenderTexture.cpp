@@ -17,6 +17,7 @@ RenderTexture::RenderTexture(unsigned int width, unsigned int height, GLint text
         static_cast<GLsizei>(m_height),
         0, textureFormat, GL_UNSIGNED_BYTE, 0
     );
+
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filter);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrap);
@@ -243,3 +244,6 @@ RenderTexture::Sprite::~Sprite() {
     // let CCSprite delete the texture
     render.m_texture = 0;
 }
+
+
+
