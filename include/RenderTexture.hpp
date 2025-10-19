@@ -35,10 +35,12 @@ class RenderTexture {
     float m_oldScaleX = 0;
     float m_oldScaleY = 0;
     bool m_fbActive = false;
+    bool m_ownsTexture = true;
 
     cocos2d::CCTexture2D* asTexture();
 public:
     RenderTexture(unsigned int width, unsigned int height, GLint texInternalFormat = GL_RGB, GLenum texFormat = GL_RGB, GLint filter = GL_NEAREST, GLint wrap = GL_REPEAT);
+    RenderTexture(cocos2d::CCTexture2D* texture);
     RenderTexture(RenderTexture&&);
     ~RenderTexture();
 
